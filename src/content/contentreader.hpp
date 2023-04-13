@@ -74,17 +74,18 @@ namespace xna {
 	public:
 		ContentTypeReaderManager() = default;
 
-		std::vector<std::shared_ptr<ContentTypeReader>> LoadAssetReaders(ContentReader& reader) {
-			return std::vector<std::shared_ptr<ContentTypeReader>>();
-		}
+		std::vector<std::shared_ptr<ContentTypeReader>> LoadAssetReaders(ContentReader& reader);
 
-		std::shared_ptr<ContentTypeReader> GetTypeReader(cs::Type targetType) {
+		std::shared_ptr<ContentTypeReader> GetTypeReader(cs::Type const& targetType) {
+			/*if (_contentReaders.contains(targetType))
+				return _contentReaders[targetType];*/
 
+			return nullptr;
 		}
 
 	private:
 		static std::map<cs::Type, std::shared_ptr<ContentTypeReader>> _contentReadersCache;
-
+		std::map<cs::Type, std::shared_ptr<ContentTypeReader>> _contentReaders;
 	};
 
 	void ContentTypeReader::Initialize(ContentTypeReaderManager& manager) {
@@ -277,6 +278,10 @@ namespace xna {
 		csint version{ 0 };
 		csint sharedResourceCount{ 0 };
 	};
+
+	std::vector<std::shared_ptr<ContentTypeReader>> ContentTypeReaderManager::LoadAssetReaders(ContentReader& reader) {
+		return std::vector<std::shared_ptr<ContentTypeReader>>();
+	}
 }
 
 #endif
