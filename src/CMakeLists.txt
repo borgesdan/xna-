@@ -9,8 +9,8 @@ add_executable (xna++
 "mathhelper.cpp"
 "xna++.cpp"
 
-"matrix.cpp"
-"quaternion.cpp"
+
+
 "basic-structs.cpp"
 
 "csharp/nullable.cpp"

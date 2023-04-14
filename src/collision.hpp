@@ -8,8 +8,6 @@
 #include "csharp/nullable.hpp"
 #include "basic-structs.hpp"
 #include "enumerations.hpp"
-#include "matrix.hpp"
-#include "quaternion.hpp"
 #include "csharp/nullable.hpp"
 
 //BoudingBox
@@ -752,9 +750,6 @@ namespace xna {
 			result.Z = (v1.Z + v2.Z + v3.Z) / f;
 		}
 	};
-}
-
-namespace xna {	
 }
 
 namespace xna {

@@ -13,8 +13,6 @@
 #include "../collision.hpp"
 #include "../color.hpp"
 #include "../basic-structs.hpp"
-#include "../quaternion.hpp"
-#include "../matrix.hpp"
 #include "../csharp/type.hpp"
 #include "lzxdecoder.hpp"
 
