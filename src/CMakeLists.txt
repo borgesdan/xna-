@@ -20,8 +20,8 @@ add_executable (xna++
 "enumerations.cpp" 
 "plane.cpp" 
 "ray.cpp"
-"curvekey.cpp" 
-"curvekeycollection.cpp"
+ 
+
 "curve.cpp"
 "color.cpp"
 "graphics/packedvector.cpp"

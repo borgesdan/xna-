@@ -7,8 +7,6 @@
 #include <array>
 #include <cmath>
 #include "mathhelper.hpp"
-#include "curvekey.hpp"
-#include "curvekeycollection.hpp"
 #include <algorithm>
 #include "graphics/packedvector.hpp"
 #include <chrono>
