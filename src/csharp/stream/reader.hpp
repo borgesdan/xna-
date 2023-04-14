@@ -38,7 +38,7 @@ namespace cs {
 		}
 
 		virtual bool ReadBoolean() {
-			InternalReadByte() != 0;
+			return InternalReadByte() != 0;
 		}
 
 		virtual char ReadChar() {

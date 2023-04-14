@@ -337,6 +337,10 @@ namespace cs {
 			return std::string();
 		}		
 
+		static constexpr bool IsPathRooted(std::string const& path) {
+			return false;
+		}
+
 	private:
 		static constexpr int KeyLength = 8;
 
