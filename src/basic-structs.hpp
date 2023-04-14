@@ -1028,4 +1028,41 @@ namespace xna {
 	using Vec4 = Vector4;
 }
 
+//Circle
+namespace xna {
+	struct Circle {
+		double Radius{ 0 };
+		double X{ 0 };
+		double Y{ 0 };		
+
+		Circle(double x, double y, double radius) :
+			X(x), Y(y), Radius(radius) {
+		}
+
+		Circle(Vector2 center, double radius):
+			X(center.X), Y(center.Y), Radius(radius) {
+		}
+
+		constexpr Vector2 Center() const {
+			return Vector2(X, Y);
+		}
+
+		constexpr bool Intersects(Circle const& other) const {
+			return Vector2::Distance(Center(), other.Center()) < Radius + other.Radius;
+		}
+
+		constexpr bool Intersects(Rectangle const& rectangle) const {
+			const auto center = Center();
+			const Vector2 v(
+				MathHelper::Clamp(center.X, rectangle.Left(), rectangle.Right()),
+				MathHelper::Clamp(center.Y, rectangle.Top(), rectangle.Bottom()));
+
+			const auto direction = center - v;
+			const auto distanceSquared = direction.LengthSquared();
+
+			return ((distanceSquared > 0) && (distanceSquared < Radius * Radius));
+		}
+	};
+}
+
 #endif
