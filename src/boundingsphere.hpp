@@ -2,7 +2,7 @@
 #define XNA_BOUNDINGSPHERE_HPP
 
 #include <cmath>
-#include "structs.hpp"
+#include "basic-structs.hpp"
 #include "mathhelper.hpp"
 #include "boundingbox.hpp"
 #include "matrix.hpp"

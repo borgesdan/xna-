@@ -2,7 +2,7 @@
 #define XNA_MATRIX_HPP
 
 #include <cmath>
-#include "structs.hpp"
+#include "basic-structs.hpp"
 #include "csharp/nullable.hpp"
 
 namespace xna {

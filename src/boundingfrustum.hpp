@@ -4,7 +4,7 @@
 //BoundingFrustum implementado do arquivo do MonoGame.
 
 #include <vector>
-#include "structs.hpp"
+#include "basic-structs.hpp"
 #include "matrix.hpp"
 #include "boundingbox.hpp"
 #include "boundingsphere.hpp"

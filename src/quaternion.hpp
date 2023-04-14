@@ -2,7 +2,7 @@
 #define XNA_QUATERNION_HPP
 
 #include <cmath>
-#include "structs.hpp"
+#include "basic-structs.hpp"
 #include "matrix.hpp"
 #include "mathhelper.hpp"
 

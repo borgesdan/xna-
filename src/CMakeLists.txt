@@ -11,7 +11,7 @@ add_executable (xna++
 
 "matrix.cpp"
 "quaternion.cpp"
-"structs.cpp"
+"basic-structs.cpp"
 
 "csharp/nullable.cpp"
 "boundingbox.cpp"
