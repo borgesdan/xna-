@@ -14,12 +14,12 @@ add_executable (xna++
 "basic-structs.cpp"
 
 "csharp/nullable.cpp"
-"boundingbox.cpp"
-"boundingsphere.cpp"
-"boundingfrustum.cpp" 
+
+
+ 
 "enumerations.cpp" 
-"plane.cpp" 
-"ray.cpp"
+ 
+
  
 
 "curve.cpp"
@@ -38,7 +38,7 @@ add_executable (xna++
 "csharp/stream/reader.cpp"
 "csharp/io/path.cpp" 
 "helpers/stringhelper.cpp"
-"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp")
+"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp" "collision.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET xna++ PROPERTY CXX_STANDARD 20)

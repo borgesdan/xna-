@@ -10,7 +10,7 @@
 #include "../csharp/stream/stream.hpp"
 #include "../csharp/stream/reader.hpp"
 #include "contentmanager.hpp"
-#include "../boundingsphere.hpp"
+#include "../collision.hpp"
 #include "../color.hpp"
 #include "../basic-structs.hpp"
 #include "../quaternion.hpp"
