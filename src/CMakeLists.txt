@@ -8,11 +8,11 @@ add_executable (xna++
 "csharp/numeric.cpp"
 "mathhelper.cpp"
 "xna++.cpp"
-"point.cpp"
+
 "matrix.cpp"
 "quaternion.cpp"
-"vector.cpp"
-"rectangle.cpp"
+"structs.cpp"
+
 "csharp/nullable.cpp"
 "boundingbox.cpp"
 "boundingsphere.cpp"

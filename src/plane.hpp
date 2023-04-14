@@ -1,7 +1,7 @@
 #ifndef XNA_PLANE_HPP
 #define XNA_PLANE_HPP
 
-#include "vector.hpp"
+#include "structs.hpp"
 #include "enumerations.hpp"
 #include "mathhelper.hpp"
 #include "matrix.hpp"

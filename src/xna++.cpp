@@ -3,7 +3,7 @@
 
 #include "xna++.h"
 #include "csharp/nullable.hpp"
-#include "vector.hpp"
+#include "structs.hpp"
 #include <array>
 #include <cmath>
 #include "mathhelper.hpp"

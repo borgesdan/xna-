@@ -3,7 +3,7 @@
 
 #include <cmath>
 #include <limits>
-#include "vector.hpp"
+#include "structs.hpp"
 #include "csharp/nullable.hpp"
 #include "boundingbox.hpp"
 #include "boundingsphere.hpp"

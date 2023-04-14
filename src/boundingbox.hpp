@@ -4,7 +4,7 @@
 #include <vector>
 #include "csharp/integralnumeric.hpp"
 #include "csharp/nullable.hpp"
-#include "vector.hpp"
+#include "structs.hpp"
 #include "enumerations.hpp"
 
 namespace xna {

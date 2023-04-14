@@ -12,7 +12,7 @@
 #include "contentmanager.hpp"
 #include "../boundingsphere.hpp"
 #include "../color.hpp"
-#include "../vector.hpp"
+#include "../structs.hpp"
 #include "../quaternion.hpp"
 #include "../matrix.hpp"
 #include "../csharp/type.hpp"

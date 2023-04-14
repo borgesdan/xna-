@@ -4,7 +4,7 @@
 #include <cmath>
 #include "../csharp/integralnumeric.hpp"
 #include "../csharp/floatnumeric.hpp"
-#include "../vector.hpp"
+#include "../structs.hpp"
 
 //Utils
 namespace xna{
