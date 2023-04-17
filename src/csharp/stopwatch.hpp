@@ -6,8 +6,7 @@
 #include <chrono>
 
 namespace cs {
-	class Stopwatch {
-	
+	class Stopwatch {	
 	public:
 		constexpr Stopwatch() {
 			Reset();
@@ -51,21 +50,62 @@ namespace cs {
 			isRunning = true;
 		}
 
-		bool IsRunning() const { return isRunning; }
-		cs::TimeSpan Elapsed() const { return cs::TimeSpan(GetElapsedDateTimeTicks()); }
-		long ElapsedMilliseconds() const { return GetElapsedDateTimeTicks() / TicksPerMillisecond; }
-		long ElapsedTicks() const { return GetRawElapsedTicks(); }
+		constexpr bool IsRunning() const { 
+			return isRunning; 
+		}
+
+		constexpr cs::TimeSpan Elapsed() const { 
+			return cs::TimeSpan(GetElapsedDateTimeTicks()); 
+		}
+
+		constexpr cslong ElapsedMilliseconds() const {
+			return GetElapsedDateTimeTicks() / TicksPerMillisecond; 
+		}
+
+		cslong ElapsedTicks() const {
+			return GetRawElapsedTicks(); 
+		}
 
 		static constexpr cslong GetTimestamp() {			
 			//TODO: verificar Ticks
 			//return DateTime.UtcNow.Ticks;					
+			//Em .NET Core retorna (long)Interop.Sys.GetTimestamp();
 			return std::chrono::utc_clock::now().time_since_epoch().count();
+		}		
+
+		constexpr cslong GetElapsedDateTimeTicks() const {
+			const auto rawTicks = GetRawElapsedTicks();		
+			return rawTicks;
 		}
+
+		static constexpr TimeSpan GetElapsedTime(cslong startingTimestamp) {
+			return GetElapsedTime(startingTimestamp, GetTimestamp());
+		}
+
+		static constexpr cs::TimeSpan GetElapsedTime(cslong startingTimestamp, cslong endingTimestamp) {
+			return TimeSpan(tolong((endingTimestamp - startingTimestamp) * tickFrequency));
+		}
+
+
+	public:
+		static constexpr cslong SecondsToNanoSeconds = 1000000000;
+		static constexpr cslong Frequency = SecondsToNanoSeconds;
+		static constexpr bool IsHighResolutions{ true };
+
+	private:
+		static constexpr cslong TicksPerMillisecond{ 1000 };
+		static constexpr cslong TicksPerSecond{ TicksPerMillisecond * 1000 };
+
+		cslong elapsed{ 0 };
+		cslong startTimeStamp{ 0 };
+		bool isRunning{ false };	
+
+		static constexpr double tickFrequency{ static_cast<double>(TicksPerSecond) / Frequency };
 
 		constexpr cslong GetRawElapsedTicks() const {
 			cslong timeElapsed = elapsed;
 
-			if (isRunning) {				
+			if (isRunning) {
 				const auto currentTimeStamp = GetTimestamp();
 				const auto elapsedUntilNow = currentTimeStamp - startTimeStamp;
 				timeElapsed += elapsedUntilNow;
@@ -74,24 +114,10 @@ namespace cs {
 			return timeElapsed;
 		}
 
-		constexpr cslong GetElapsedDateTimeTicks() const {
-			const auto rawTicks = GetRawElapsedTicks();		
-			return rawTicks;
+		constexpr cslong GetElapsedDateTimeTicks() {
+			return tolong(GetRawElapsedTicks() * tickFrequency);
 		}
-
-	private:
-		static constexpr cslong TicksPerMillisecond{ 1000 };
-		static constexpr cslong TicksPerSecond{ TicksPerMillisecond * 1000 };
-
-		cslong elapsed{ 0 };
-		cslong startTimeStamp{ 0 };
-		bool isRunning{ 0 };	
-
-		static constexpr double tickFrequency{ 1 };
-
-	public:
-		static constexpr cslong Frequency{ TicksPerSecond };
-		static constexpr bool IsHighResolutions { false };
+	
 	};
 }
 

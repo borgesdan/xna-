@@ -1,5 +1,5 @@
-#ifndef XNA_TYPE_HPP
-#define XNA_TYPE_HPP
+#ifndef CS_TYPE_HPP
+#define CS_TYPE_HPP
 
 #include <any>
 #include <typeinfo>
