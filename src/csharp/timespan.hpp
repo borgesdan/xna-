@@ -11,8 +11,7 @@ namespace cs {
 		static constexpr cslong TicksPerSecond{ TicksPerMillisecond * 1000 };
 		static constexpr cslong TicksPerMinute{ TicksPerSecond * 60	};
 		static constexpr cslong TicksPerHour{ TicksPerMinute * 60 };
-		static constexpr cslong TicksPerDay{ TicksPerHour * 24 };		
-		
+		static constexpr cslong TicksPerDay{ TicksPerHour * 24 };				
 
 		constexpr TimeSpan() = default;
 		constexpr TimeSpan(cslong ticks) :
