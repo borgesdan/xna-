@@ -34,8 +34,7 @@ namespace xna {
 			while (Contains(filePath, "//"))
 				Replace(filePath, "//", "/");
 
-			const auto hasForwardSlash = StartWith(filePath, ForwardSlashString());
-			
+			const auto hasForwardSlash = StartWith(filePath, ForwardSlashString());			
 
 			if (!hasForwardSlash) {			
 				filePath = ForwardSlashString() + filePath;
@@ -54,9 +53,11 @@ namespace xna {
 		}
 
 		static constexpr void UrlEncode(std::string& url) {
+			//TODO: FileHelpers.UrlEncode
 		}
 
 		static constexpr void TrimPath(std::string& filePath) {
+			//TODO: FileHelpers.TrimPath
 		}
 
 	private:
