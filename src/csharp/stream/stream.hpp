@@ -38,6 +38,8 @@ namespace cs {
 		virtual void Write(std::vector<csbyte>& buffer, csint offset, csint count) {}
 		virtual void WriteByte(csbyte value) {}
 	};
+
+	using PtrStream = std::shared_ptr<cs::Stream>;
 }
 
 //MemoryStream

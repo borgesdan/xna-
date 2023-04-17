@@ -14,6 +14,7 @@
 #include <any>
 #include <type_traits>
 #include "csharp/type.hpp"
+#include "utilities/stringhelper.hpp"
 
 
 using namespace std;
@@ -67,6 +68,10 @@ int main()
 	isArray = to.IsArray();
 
 	delete[] vec;
+
+	string xuva("titititoto");
+	bool startWith = StartWith(xuva, "tititi");
+	
 
 	return 0;
 }

@@ -6,12 +6,12 @@
 #include <string>
 #include <algorithm>
 #include "csharp/stream/stream.hpp"
-#include "helpers/stringhelper.hpp"
+//#include "csharp/uri/uri.hpp"
+#include "utilities/stringhelper.hpp"
 
 namespace xna {
-	class TitleContainer {
-	public:
-		static std::shared_ptr<cs::Stream> OpenStream(std::string const& name) {
+	struct TitleContainer {	
+		static cs::PtrStream OpenStream(std::string const& name) {
 			if (name.empty())
 				return nullptr;
 
@@ -21,13 +21,17 @@ namespace xna {
 		static void PlatformInit() {
 		}
 
-		static std::string Location() {
-			return std::string();
+		static constexpr std::string Location() {
+			return location;
 		}
 
 		static std::string NormalizeRelativePath(std::string name) {
+			//auto uri = cs::Uri("file:///");
 			return std::string();
 		}
+
+	private:
+		static std::string location;
 	};
 }
 

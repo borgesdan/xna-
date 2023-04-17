@@ -37,8 +37,8 @@ add_executable (xna++
 "csharp/uri/uri.cpp"
 "csharp/stream/reader.cpp"
 "csharp/io/path.cpp" 
-"helpers/stringhelper.cpp"
-"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp" "collision.cpp" )
+"utilities/stringhelper.cpp"
+"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp" "collision.cpp"  "utilities/filehelpers.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET xna++ PROPERTY CXX_STANDARD 20)

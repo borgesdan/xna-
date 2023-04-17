@@ -446,12 +446,7 @@ namespace cs {
 
 		static constexpr UriSyntaxFlags NetTcpSyntaxFlags = static_cast<UriSyntaxFlags>(
 			toulong(NetPipeSyntaxFlags) | toulong(UriSyntaxFlags::MayHavePort));
-	};
-
-	std::map<std::string, std::string> UriParser::s_table
-	{
-
-	};
+	};	
 
 	struct BuiltInUriParser : public UriParser {
 		constexpr BuiltInUriParser(std::string lwrCaseScheme, csint defaultPort, UriSyntaxFlags syntaxFlags) :
@@ -484,11 +479,21 @@ namespace cs {
 namespace cs {
 	class Uri {
 	public:
-		Uri(std::string const& uriString) {
+		constexpr Uri(std::string const& uriString) {
+		}
+
+		constexpr Uri(Uri const& baseUri, std::string const& relativeUri) {
 		}
 
 		constexpr bool UserDrivenParsing() const {
 			return (toulong(_flags) & toulong(Flags::UserDrivenParsing)) != 0;
+		}
+
+		std::string LocalPath() const {
+			if (IsNotAbsoluteUri())
+				return std::string();
+
+			return GetLocalPath();
 		}
 
 	public:
@@ -573,9 +578,13 @@ namespace cs {
 
 		static constexpr bool StaticInFact(Flags allFlags, Flags checkFlags) {
 			return (toulong(allFlags) & toulong(checkFlags)) != 0;
+		}		
+
+		std::string GetLocalPath() const {
+			return std::string(); //TODO Uri.GetLocalPath();
 		}
 
-		void CreateThis(std::string uri, bool dontEscape, UriKind uriKind, UriCreationOptions creationOptions) {
+		constexpr void CreateThis(std::string uri, bool dontEscape, UriKind uriKind, UriCreationOptions creationOptions) {
 			
 			if (toint(uriKind) < toint(UriKind::RelativeOrAbsolute) || toint(uriKind) > toint(UriKind::Relative)) {
 				return;
@@ -594,10 +603,10 @@ namespace cs {
 			//InitializeUri(err, uriKind, out UriFormatException ? e);
 			
 			/*if (e != null)
-				throw e;*/
+				throw e;*/			
 		}
 
-		static ParsingError ParseScheme(std::string& uriString, Flags& flags, std::shared_ptr<UriParser>& syntax) {
+		static constexpr ParsingError ParseScheme(std::string& uriString, Flags& flags, std::shared_ptr<UriParser>& syntax) {
 			auto length = uriString.size();
 
 			if (length == 0)
