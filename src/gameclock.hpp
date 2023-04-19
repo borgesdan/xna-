@@ -8,116 +8,130 @@
 namespace xna {
 	class GameClock {
 	public:
-        constexpr GameClock() {
-            Reset();
-        }
+		constexpr GameClock() {
+			Reset();
+		}
 
-        constexpr void Reset() {
-            currentTimeBase = cs::TimeSpan::Zero();
-            currentTimeOffset = cs::TimeSpan::Zero();
-            baseRealTime = Counter();
-            lastRealTimeValid = false;
-        }
+		constexpr void Reset() {
+			currentTimeBase = cs::TimeSpan::Zero();
+			currentTimeOffset = cs::TimeSpan::Zero();
+			baseRealTime = Counter();
+			lastRealTimeValid = false;
+		}
 
-        constexpr void UpdateElapsedTime() {
-            cslong counter = Counter();
+		constexpr void UpdateElapsedTime() {
+			cslong counter = Counter();
 
-            if (!lastRealTimeValid) {
-                lastRealTime = counter;
-                lastRealTimeValid = true;
-            }
+			if (!lastRealTimeValid) {
+				lastRealTime = counter;
+				lastRealTimeValid = true;
+			}
 
-            currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
+			currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
 
-            if (currentTimeOffset.HasOverflowException()) {
-                currentTimeBase = currentTimeBase + currentTimeOffset;
-                baseRealTime = lastRealTime;
+			if (currentTimeOffset.HasOverflowException()) {
+				currentTimeBase = currentTimeBase + currentTimeOffset;
+				baseRealTime = lastRealTime;
 
-                currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
+				currentTimeOffset = CounterToTimeSpan(counter - baseRealTime);
 
-                if (currentTimeOffset.HasOverflowException()) {
-                    baseRealTime = counter;
-                    currentTimeOffset = cs::TimeSpan::Zero();
-                }
-            }
+				if (currentTimeOffset.HasOverflowException()) {
+					baseRealTime = counter;
+					currentTimeOffset = cs::TimeSpan::Zero();
+				}
+			}
 
-            elapsedTime = CounterToTimeSpan(counter - lastRealTime);
+			elapsedTime = CounterToTimeSpan(counter - lastRealTime);
 
-            if (elapsedTime.HasOverflowException()) {
-                elapsedTime = cs::TimeSpan::Zero();
-            }
+			if (elapsedTime.HasOverflowException()) {
+				elapsedTime = cs::TimeSpan::Zero();
+			}
 
-            cslong num = lastRealTime + timeLostToSuspension;
-            elapsedAdjustedTime = CounterToTimeSpan(counter - num);
+			cslong num = lastRealTime + timeLostToSuspension;
+			elapsedAdjustedTime = CounterToTimeSpan(counter - num);
 
-            if (elapsedAdjustedTime.HasOverflowException()) {
-                elapsedAdjustedTime = cs::TimeSpan::Zero();
-            }
-            
-            lastRealTimeCandidate = counter;           
-        }
-        
-        constexpr void AdvanceFrameTime() {
-            lastRealTime = lastRealTimeCandidate;
-            timeLostToSuspension = 0L;
-        }
+			if (elapsedAdjustedTime.HasOverflowException()) {
+				elapsedAdjustedTime = cs::TimeSpan::Zero();
+			}
 
-        constexpr void Suspend() {
-            ++suspendCount;
+			lastRealTimeCandidate = counter;
+		}
 
-            if (suspendCount != 1)
-                return;
+		constexpr void AdvanceFrameTime() {
+			lastRealTime = lastRealTimeCandidate;
+			timeLostToSuspension = 0L;
+		}
 
-            suspendStartTime = Counter();
-        }
+		constexpr void Suspend() {
+			++suspendCount;
 
-        constexpr void Resume() {
-            --suspendCount;
+			if (suspendCount != 1)
+				return;
 
-            if (suspendCount > 0)
-                return;
+			suspendStartTime = Counter();
+		}
 
-            timeLostToSuspension += Counter() - suspendStartTime;
-            suspendStartTime = 0L;
-        }
+		constexpr void Resume() {
+			--suspendCount;
 
-        static constexpr cslong Frequency() {
-            return cs::Stopwatch::Frequency;
-        }
+			if (suspendCount > 0)
+				return;
 
-        constexpr cs::TimeSpan CurrentTime() const {
-            return currentTimeBase + currentTimeOffset; 
-        }
-        
-        constexpr cs::TimeSpan ElapsedTime() const {
-            return elapsedTime; 
-        }
+			timeLostToSuspension += Counter() - suspendStartTime;
+			suspendStartTime = 0L;
+		}
 
-        constexpr cs::TimeSpan ElapsedAdjustedTime() const { 
-            return elapsedAdjustedTime; 
-        }
+		static constexpr cslong Frequency() {
+			return cs::Stopwatch::Frequency;
+		}
 
-        static constexpr cslong Counter() {
-            return cs::Stopwatch::GetTimestamp();
-        }
+		constexpr cs::TimeSpan CurrentTime() const {
+			return currentTimeBase + currentTimeOffset;
+		}
 
-        static constexpr cs::TimeSpan CounterToTimeSpan(cslong delta) {
-            cslong num = 10000000;
-            return cs::TimeSpan::FromTicks((delta * num) / Frequency());
-        }
+		constexpr cs::TimeSpan ElapsedTime() const {
+			return elapsedTime;
+		}
+
+		constexpr cs::TimeSpan ElapsedAdjustedTime() const {
+			return elapsedAdjustedTime;
+		}
+
+		static constexpr cslong Counter() {
+			return cs::Stopwatch::GetTimestamp();
+		}
+
+		static constexpr cs::TimeSpan CounterToTimeSpan(cslong delta) {
+			cslong num = 10000000;
+			return cs::TimeSpan::FromTicks((delta * num) / Frequency());
+		}
 
 	private:
-        cslong baseRealTime{0};
-        cslong lastRealTime{ 0 };
-        bool lastRealTimeValid{false};
-        csint suspendCount{ 0 };
-        cslong suspendStartTime{ 0 };
-        cslong timeLostToSuspension{ 0 };
-        cslong lastRealTimeCandidate{ 0 };
-        cs::TimeSpan currentTimeOffset;
-        cs::TimeSpan currentTimeBase;
-        cs::TimeSpan elapsedTime;
-        cs::TimeSpan elapsedAdjustedTime;
+		cslong baseRealTime{ 0 };
+		cslong lastRealTime{ 0 };
+		bool lastRealTimeValid{ false };
+		csint suspendCount{ 0 };
+		cslong suspendStartTime{ 0 };
+		cslong timeLostToSuspension{ 0 };
+		cslong lastRealTimeCandidate{ 0 };
+		cs::TimeSpan currentTimeOffset;
+		cs::TimeSpan currentTimeBase;
+		cs::TimeSpan elapsedTime;
+		cs::TimeSpan elapsedAdjustedTime;
+	};
+
+	struct GameTime {
+		cs::TimeSpan TotalGameTime{ cs::TimeSpan::Zero() };
+		cs::TimeSpan ElapsedGameTime{ cs::TimeSpan::Zero() };
+		bool IsRunningSlowly{ false };
+
+		constexpr GameTime() = default;
+
+		constexpr GameTime(cs::TimeSpan totalGameTime, cs::TimeSpan elapsedGameTime, bool isRunningSlowly = false) :
+			TotalGameTime(totalGameTime),
+			ElapsedGameTime(elapsedGameTime),
+			IsRunningSlowly(isRunningSlowly) {
+		}
 	};
 }
 
