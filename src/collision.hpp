@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <limits>
+#include <memory>
 #include "csharp/integralnumeric.hpp"
 #include "csharp/nullable.hpp"
 #include "basic-structs.hpp"
@@ -750,6 +751,8 @@ namespace xna {
 			result.Z = (v1.Z + v2.Z + v3.Z) / f;
 		}
 	};
+
+	using PtrBoundingFrustum = std::shared_ptr<xna::BoundingFrustum>;
 }
 
 namespace xna {

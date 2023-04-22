@@ -5,33 +5,29 @@
 #include <vector>
 #include <memory>
 #include <string>
+#include <fstream>
 #include "../../mathhelper.hpp"
 #include "../integralnumeric.hpp"
 #include "../array.hpp"
+#include "../enumerations.hpp"
 
 //Stream
 namespace cs {
-	enum class SeekOrigin {
-		Begin = 0,
-		Current = 1,
-		End = 2
-	};
-
 	class Stream {
 	public:
-		virtual constexpr bool CanRead() { return false; }
-		virtual constexpr bool CanWrite() { return false; }
-		virtual constexpr bool CanSeek() { return false; }
-		virtual constexpr cslong Length() { return -1; }
-		virtual constexpr cslong Position() { return -1; }
-		virtual constexpr void Position(cslong value) {}
-		virtual constexpr void Flush() {}
-		virtual constexpr bool CanTimeout() { return false; }
-		virtual constexpr csint ReadTimeout() { return 0; }
-		virtual constexpr void ReadTimeout(csint value) {}
-		virtual constexpr csint WriteTimeout() { return 0; }
-		virtual constexpr void WriteTimeout(csint value) {}
-		virtual constexpr void Close() {}
+		virtual bool CanRead() { return false; }
+		virtual bool CanWrite() { return false; }
+		virtual bool CanSeek() { return false; }
+		virtual cslong Length() { return -1; }
+		virtual cslong Position() { return -1; }
+		virtual void Position(cslong value) {}
+		virtual void Flush() {}
+		virtual bool CanTimeout() { return false; }
+		virtual csint ReadTimeout() { return 0; }
+		virtual void ReadTimeout(csint value) {}
+		virtual csint WriteTimeout() { return 0; }
+		virtual void WriteTimeout(csint value) {}
+		virtual void Close() {}
 		virtual cslong Seek(cslong offset, SeekOrigin origin) { return -1; }
 		virtual csint Read(std::vector<csbyte>& buffer, csint offset, csint count) { return -1; }
 		virtual csint ReadByte() { return 0; }
@@ -345,6 +341,157 @@ namespace cs {
 			}
 			return false;
 		}
+	};
+}
+
+//FileStream
+namespace cs {
+	class FileStream : Stream {
+	public:
+		FileStream(std::string const& file) {
+			_fstream.open(file, std::ios_base::in | std::ios_base::out | std::ios_base::binary);
+		}
+
+		FileStream(std::string const& file, std::ios_base::openmode mode) {
+			_fstream.open(file, mode);
+		}
+
+		virtual bool CanRead() override {
+			if (!_fstream.is_open())
+				return false;
+
+			return true; 
+		}
+
+		virtual bool CanWrite() override { 
+			if (!_fstream.is_open())
+				return false;
+
+			return true; 
+		}
+
+		virtual bool CanSeek() override {
+			if (!_fstream.is_open())
+				return false;
+
+			return true; 
+		}
+
+		virtual cslong Length() override { 
+			return -1; 
+		}
+
+		virtual cslong Position() override {
+			if (!_fstream.is_open())
+				return -1;
+
+			return _fstream.tellg();
+		}
+
+		virtual void Position(cslong value) override {
+			if (!_fstream.is_open())
+				return;
+
+			_fstream.seekg(value);
+		}
+
+		virtual constexpr void Flush() override {}
+
+		virtual constexpr bool CanTimeout() override { 
+			return false; 
+		}
+
+		virtual constexpr csint ReadTimeout() override { 
+			return 0; 
+		}
+
+		virtual constexpr void ReadTimeout(csint value) override {
+		}
+
+		virtual constexpr csint WriteTimeout() override { 
+			return 0; 
+		}
+
+		virtual constexpr void WriteTimeout(csint value) override {
+		}
+
+		virtual void Close() override {
+			if (!_fstream.is_open())
+				return;
+
+			_fstream.close();
+		}
+
+		virtual cslong Seek(cslong offset, SeekOrigin origin) override { 
+			if (!_fstream.is_open())
+				return -1;
+
+			switch (origin)
+			{
+			case cs::SeekOrigin::Begin:
+				_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekbeg);
+				break;
+			case cs::SeekOrigin::Current:
+				_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekcur);
+				break;
+			case cs::SeekOrigin::End:
+				_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekend);
+				break;
+			default:
+				return -1;
+				break;
+			}
+
+			return Position();
+		}
+
+		virtual csint Read(std::vector<csbyte>& buffer, csint offset, csint count) override { 
+			if (!_fstream.is_open())
+				return -1;
+
+			csint n = Length() - Position();
+			
+			if (n > count)
+				n = count;
+
+			if (n <= 0)
+				return 0;
+			
+			_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekcur);
+			_fstream.read(reinterpret_cast<char*>(buffer.data()), n);
+
+			return n;
+		}
+
+		virtual csint ReadByte() override { 
+			if (!_fstream.is_open())
+				return -1;
+
+			char value;
+			_fstream.read(&value, sizeof(csbyte));
+
+			return value;
+		}
+
+		virtual void Write(std::vector<csbyte>& buffer, csint offset, csint count) override {
+			if (!_fstream.is_open())
+				return;
+
+			csint i = Position() + count;
+
+			if (i < 0)
+				return;
+
+			_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekcur);
+			_fstream.write(reinterpret_cast<char*>(buffer.data()), count);
+		}
+
+		virtual void WriteByte(csbyte value) override {
+			_fstream.put(static_cast<char>(value));
+		}
+
+	private:
+		std::fstream _fstream;
 	};
 }
 
