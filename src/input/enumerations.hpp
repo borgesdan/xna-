@@ -1,6 +1,8 @@
 #ifndef XNA_INPUT_ENUMERATIONS_HPP
 #define XNA_INPUT_ENUMERATIONS_HPP
 
+#include "../csharp/integralnumeric.hpp"
+
 namespace xna {
 	enum class ButtonState {
 		Released,
