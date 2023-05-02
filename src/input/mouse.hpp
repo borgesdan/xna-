@@ -122,6 +122,13 @@ namespace xna {
 				_buttons = tobyte(_buttons & (~XButton2Flag));
 		}
 	};
+
+	struct MouseCursor {		
+	};
+
+	struct Mouse {
+
+	};
 }
 
 #endif
