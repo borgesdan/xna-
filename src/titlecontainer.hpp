@@ -6,9 +6,11 @@
 #include "csharp/uri/uri.hpp"
 #include "utilities/stringhelper.hpp"
 #include "utilities/filehelpers.hpp"
+#include "csharp/io/file.hpp"
 
 namespace xna {
 	struct TitleContainer {
+		
 		static cs::PtrStream OpenStream(std::string const& name) {
 			if (name.empty())
 				return nullptr;
@@ -25,8 +27,9 @@ namespace xna {
 
 		static cs::PtrStream PlatformOpenStream(std::string const& safeName) {
 			auto absolutePath = cs::Path::Combine(location, safeName);
-			//TODO: return File.OpenRead(absolutePath);
-			return nullptr;
+			auto stream = std::make_shared<cs::FileStream>(absolutePath);
+
+			return std::dynamic_pointer_cast<cs::Stream>(stream);
 		}
 
 		static void PlatformInit() {

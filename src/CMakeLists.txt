@@ -38,7 +38,7 @@ add_executable (xna++
 "csharp/stream/reader.cpp"
 "csharp/io/path.cpp" 
 "utilities/stringhelper.cpp"
-"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp" "collision.cpp"  "utilities/filehelpers.cpp"  "csharp/enumerations.cpp")
+"content/decompress-stream.cpp"  "csharp/type.cpp" "content/lzxdecoder.cpp" "collision.cpp"  "utilities/filehelpers.cpp"  "csharp/enumerations.cpp" "csharp/io/file.cpp" "input/mouse.cpp" "input/enumerations.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET xna++ PROPERTY CXX_STANDARD 20)

@@ -35,7 +35,7 @@ namespace cs {
 		virtual void WriteByte(csbyte value) {}
 	};
 
-	using PtrStream = std::shared_ptr<cs::Stream>;
+	using PtrStream = std::shared_ptr<cs::Stream>;	
 }
 
 //MemoryStream
@@ -342,10 +342,13 @@ namespace cs {
 			return false;
 		}
 	};
+
+	using PtrMemoryStream = std::shared_ptr<cs::MemoryStream>;
 }
 
 //FileStream
-namespace cs {
+namespace cs {	
+
 	class FileStream : Stream {
 	public:
 		FileStream(std::string const& file) {
@@ -354,6 +357,10 @@ namespace cs {
 
 		FileStream(std::string const& file, std::ios_base::openmode mode) {
 			_fstream.open(file, mode);
+		}
+
+		FileStream(std::string const& file, FileMode mode, FileAccess access) {
+
 		}
 
 		virtual bool CanRead() override {
@@ -455,10 +462,10 @@ namespace cs {
 				n = count;
 
 			if (n <= 0)
-				return 0;
+				return 0;			
 			
 			_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekcur);
-			_fstream.read(reinterpret_cast<char*>(buffer.data()), n);
+			_fstream.read(reinterpret_cast<char*>(buffer.data()), n * sizeof(csbyte));
 
 			return n;
 		}
@@ -483,16 +490,22 @@ namespace cs {
 				return;
 
 			_fstream.seekp(offset, std::ios_base::_Seekdir::_Seekcur);
-			_fstream.write(reinterpret_cast<char*>(buffer.data()), count);
+			_fstream.write(reinterpret_cast<char*>(buffer.data()), count * sizeof(csbyte));
 		}
 
 		virtual void WriteByte(csbyte value) override {
 			_fstream.put(static_cast<char>(value));
 		}
 
+		static std::shared_ptr<FileStream> Make(std::string const& path) {
+			return std::make_shared<FileStream>(path);
+		}
+
 	private:
 		std::fstream _fstream;
 	};
+
+	using PtrFileStream = std::shared_ptr<cs::FileStream>;
 }
 
 #endif
