@@ -15,7 +15,7 @@
 #include <type_traits>
 #include "csharp/type.hpp"
 #include "utilities/stringhelper.hpp"
-
+#include "input/keyboard.hpp"
 
 using namespace std;
 using namespace xna;
@@ -50,27 +50,20 @@ public:
 
 int main()
 {
-	shared_ptr<Reader> r = make_shared<Ximbica>();
+	for (int i = 8; i < 255; ++i) {
 
-	int bilulu = 9865;
-	auto bufa = any_cast<int>(r->Read(bilulu));	
+		auto key = static_cast<Keys>(i);
+		cout << (int)key << endl;
 
-	//std::is_array<int>::value;
-	char* vec = new char[100];
-
-	auto isArray = std::is_array<char[]>::value;
-
-	auto tp = Type(vec);
-	isArray = tp.IsArray();
-	auto isPointer = tp.IsPointer();
-
-	auto to = typeof<int[]>();
-	isArray = to.IsArray();
-
-	delete[] vec;
-
-	string xuva("titititoto");
-	bool startWith = StartWith(xuva, "tititi");
+		if (i == 9)
+			i = 12;
+		else if (i == 13)
+			i == 19;
+		else if (i == 20)
+			i == 26;
+		else if (i == 26)
+			i == 31;
+	}
 	
 
 	return 0;

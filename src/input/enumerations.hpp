@@ -14,8 +14,7 @@ namespace xna {
 		Down,
 	};
 
-    enum class Keys : csint {
-        
+    enum class Keys : csint {        
         None = 0,        
         Back = 8,
         Tab = 9,
@@ -177,6 +176,8 @@ namespace xna {
         OemCopy = 0xf2,
         OemEnlW = 0xf4
     };
+
+    
 }
 
 #endif
