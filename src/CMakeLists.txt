@@ -38,7 +38,7 @@ add_executable (xna++
 "collision.cpp"
 "csharp/enumerations.cpp"
 "csharp/io/file.cpp"
-)
+ "input/gamepad.cpp")
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET xna++ PROPERTY CXX_STANDARD 20)
