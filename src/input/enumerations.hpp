@@ -14,6 +14,14 @@ namespace xna {
 		Down,
 	};
 
+    enum class MouseButton : csbyte {
+        Left = 1,
+        Right = 2,
+        Middle = 4,
+        X1 = 8,
+        X2 = 16
+    };
+
     enum class GamePadType {
         Unknown,
         GamePad,
@@ -27,7 +35,7 @@ namespace xna {
         BigButtonPad = 768
     };
 
-    enum class Buttons {
+    enum class Buttons : csint {
         None = 0,
         DPadUp = 1,
         DPadDown = 2,

@@ -2,27 +2,19 @@
 #define XNA_INPUT_MOUSE_HPP
 
 #include "../csharp/integralnumeric.hpp"
-#include "enumerations.hpp"
 #include "../basic-structs.hpp"
+#include "enumerations.hpp"
+#include <Windows.h>
 
 namespace xna {
-	enum class MouseButton : csbyte {
-		LeftButton = 1,
-		RightButton = 2,
-		MiddleButton = 4,
-		XButton1 = 8,
-		XButton2 = 16
-	};
+	class Texture2D;
 
 	struct MouseState {
-		constexpr MouseState() {}
+		constexpr MouseState() = default;
 
-		constexpr MouseState(csint x, csint y, csint scrollWheel,
-			ButtonState leftButton, ButtonState middleButton, ButtonState rightButton,
+		constexpr MouseState(csint x, csint y, csint scrollWheel, ButtonState leftButton, ButtonState middleButton, ButtonState rightButton,
 			ButtonState xButton1, ButtonState xButton2, csint horizontalScrollWheel = 0) :
-			X(x), Y(y),
-			ScrollWheelValue(scrollWheel),
-			HorizontalScrollWheelValue(horizontalScrollWheel) {
+			X(x), Y(y),	ScrollWheelValue(scrollWheel), HorizontalScrollWheelValue(horizontalScrollWheel) {
 			_buttons = tobyte(
 				(leftButton == ButtonState::Pressed ? LeftButtonFlag : 0) |
 				(rightButton == ButtonState::Pressed ? RightButtonFlag : 0) |
@@ -32,12 +24,11 @@ namespace xna {
 		}	
 
 		constexpr bool Equals(MouseState const& other) const {
-			return 
-				X == other.X &&
-				Y == other.Y &&
-				_buttons == other._buttons &&
-				ScrollWheelValue == other.ScrollWheelValue &&
-				HorizontalScrollWheelValue == other.HorizontalScrollWheelValue;
+			return X == other.X 
+				&& Y == other.Y 
+				&& _buttons == other._buttons 
+				&& ScrollWheelValue == other.ScrollWheelValue 
+				&& HorizontalScrollWheelValue == other.HorizontalScrollWheelValue;
 		}
 
 		friend constexpr bool operator==(MouseState const& left, MouseState const& right) {
@@ -46,22 +37,7 @@ namespace xna {
 
 		friend constexpr bool operator!=(MouseState const& left, MouseState const& right) {
 			return !left.Equals(right);
-		}
-
-	private:
-		static constexpr csbyte LeftButtonFlag = static_cast<csbyte>(MouseButton::LeftButton);
-		static constexpr csbyte RightButtonFlag = static_cast<csbyte>(MouseButton::RightButton);
-		static constexpr csbyte MiddleButtonFlag = static_cast<csbyte>(MouseButton::MiddleButton);
-		static constexpr csbyte XButton1Flag = static_cast<csbyte>(MouseButton::XButton1);
-		static constexpr csbyte XButton2Flag = static_cast<csbyte>(MouseButton::XButton2);
-
-		csint ScrollWheelValue{ 0 };
-		csint HorizontalScrollWheelValue{ 0 };
-		csbyte _buttons{ 0 };
-
-	public:
-		csint X{ 0 };
-		csint Y{ 0 };
+		}	
 		
 		constexpr Point Position() const {
 			return { X, Y };
@@ -121,9 +97,44 @@ namespace xna {
 			else
 				_buttons = tobyte(_buttons & (~XButton2Flag));
 		}
+
+	public:
+		csint X{ 0 };
+		csint Y{ 0 };
+
+	private:
+		static constexpr csbyte LeftButtonFlag = static_cast<csbyte>(MouseButton::Left);
+		static constexpr csbyte RightButtonFlag = static_cast<csbyte>(MouseButton::Right);
+		static constexpr csbyte MiddleButtonFlag = static_cast<csbyte>(MouseButton::Middle);
+		static constexpr csbyte XButton1Flag = static_cast<csbyte>(MouseButton::X1);
+		static constexpr csbyte XButton2Flag = static_cast<csbyte>(MouseButton::X2);
+
+		csint ScrollWheelValue{ 0 };
+		csint HorizontalScrollWheelValue{ 0 };
+		csbyte _buttons{ 0 };
 	};
 
-	struct MouseCursor {		
+	struct MouseCursor {	
+		
+		HCURSOR _cursor;
+
+		MouseCursor(HCURSOR cursor);			
+
+		static MouseCursor Arrow;
+		static MouseCursor IBeam;
+		static MouseCursor Wait;
+		static MouseCursor Crosshair;
+		static MouseCursor WaitArrow;
+		static MouseCursor SizeNWSE;
+		static MouseCursor SizeNESW;
+		static MouseCursor SizeWE;
+		static MouseCursor SizeNS;
+		static MouseCursor SizeAll;
+		static MouseCursor No;
+		static MouseCursor Hand;
+
+		static MouseCursor PlatformFromTexture2D(Texture2D texture, int originx, int originy);
+		static MouseCursor FromTexture2D(Texture2D texture, int originx, int originy);
 	};
 
 	struct Mouse {
