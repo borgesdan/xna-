@@ -6,6 +6,7 @@
 #include "enumerations.hpp"
 #include "../mathhelper.hpp"
 #include "../basic-structs.hpp"
+#include "../enumerations.hpp"
 
 namespace xna {
 	struct GamePadTriggers {
@@ -175,7 +176,7 @@ namespace xna {
 
 		constexpr bool Equals(GamePadCapabilities const& other) const {
 			return
-			(DisplayName == other.DisplayName);
+				(DisplayName == other.DisplayName);
 			(Identifier == other.Identifier);
 			(IsConnected == other.IsConnected);
 			(HasAButton == other.HasAButton);
@@ -260,15 +261,15 @@ namespace xna {
 		constexpr ButtonState LeftStick() {
 			return Get(Buttons::LeftStick);
 		}
-		
+
 		constexpr ButtonState RightShoulder() {
 			return Get(Buttons::RightShoulder);
 		}
-		
+
 		constexpr ButtonState RightStick() {
 			return Get(Buttons::RightStick);
 		}
-		
+
 		constexpr ButtonState BigButton() {
 			return Get(Buttons::BigButton);
 		}
@@ -292,6 +293,109 @@ namespace xna {
 				: ButtonState::Released;
 		}
 	};
+
+	struct GamePadDPad {
+		ButtonState Down{ ButtonState::Released };
+		ButtonState Left{ ButtonState::Released };
+		ButtonState Right{ ButtonState::Released };
+		ButtonState Up{ ButtonState::Released };
+
+		constexpr GamePadDPad() = default;
+
+		constexpr GamePadDPad(ButtonState up, ButtonState down, ButtonState left, ButtonState right) :
+			Up(up), Down(down), Left(left), Right(right) {
+		}
+
+		constexpr GamePadDPad(std::vector<Buttons> const& buttons) {
+			for (size_t i = 0; i < buttons.size(); ++i) {
+				ConvertButtonToDirection(buttons[i]);
+			}
+		}
+
+		constexpr GamePadDPad(Buttons button) {
+			ConvertButtonToDirection(button);
+		}
+
+		constexpr bool Equals(GamePadDPad const& other) const {
+			return (Down == other.Down)
+				&& (Left == other.Left)
+				&& (Right == other.Right)
+				&& (Up == other.Up);
+		}
+
+		friend constexpr bool operator==(GamePadDPad const& left, GamePadDPad const& right) {
+			return left.Equals(right);
+		}
+
+		friend constexpr bool operator!=(GamePadDPad const& left, GamePadDPad const& right) {
+			return !left.Equals(right);
+		}
+
+	private:
+		void constexpr ConvertButtonToDirection(Buttons button) {
+			SetPressedState(button, Buttons::DPadDown, Down);
+			SetPressedState(button, Buttons::DPadLeft, Left);
+			SetPressedState(button, Buttons::DPadRight, Right);
+			SetPressedState(button, Buttons::DPadUp, Up);
+		}
+
+		static constexpr void SetPressedState(Buttons current, Buttons value, ButtonState& state) {
+			if (static_cast<Buttons>(toint(current) & toint(value)) == value)
+				state = ButtonState::Pressed;
+		}
+	};
+
+	struct GamePadState {
+
+		constexpr GamePadState() = default;
+
+		GamePadState(GamePadThumbSticks thumbSticks, GamePadTriggers triggers, GamePadButtons buttons, GamePadDPad dPad) :
+			ThumbSticks(thumbSticks), Triggers(triggers), Buttons(buttons), DPad(dPad), IsConnected(true) {
+			PlatformConstruct();
+		}
+
+		void PlatformConstruct() {
+
+		}
+
+		static constexpr GamePadState Default() {
+			return GamePadState();
+		}
+
+		bool IsConnected{ false };
+		csint PacketNumber{ 0 };
+		GamePadButtons Buttons;
+		GamePadDPad DPad;
+		GamePadThumbSticks ThumbSticks;
+		GamePadTriggers Triggers;
+	};
+
+	/*struct GamePad {
+		static GamePadCapabilities GetCapabilities(PlayerIndex playerIndex) {
+
+		}
+
+		static GamePadCapabilities GetCapabilities(int index) {
+			if (index < 0 || index >= PlatformGetMaxNumberOfGamePads())
+				return GamePadCapabilities();
+
+			return PlatformGetCapabilities(index);
+		}
+
+		static GamePadState GetState(PlayerIndex index, GamePadDeadZone leftDeadZoneMode = GamePadDeadZone::IndependentAxes,
+			GamePadDeadZone rightDeadZoneMode = GamePadDeadZone::IndependentAxes) {
+			const auto _index = static_cast<int>(index);
+		}
+
+	private:
+		static constexpr int PlatformGetMaxNumberOfGamePads() {
+			return 4;
+		}
+		static constexpr GamePadCapabilities PlatformGetCapabilities(int index) {
+			return GamePadCapabilities();
+		}
+
+	};*/
 }
 
 #endif
