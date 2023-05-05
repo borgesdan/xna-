@@ -354,20 +354,80 @@ namespace xna {
 			PlatformConstruct();
 		}
 
-		void PlatformConstruct() {
+		GamePadState(Vector2 const& leftThumbStick, Vector2 const& rightThumbStick, double leftTrigger, double rightTrigger, Buttons button) :
+			GamePadState(GamePadThumbSticks(leftThumbStick, rightThumbStick), GamePadTriggers(leftTrigger, rightTrigger), GamePadButtons(button), GamePadDPad(button)) {
 
+		}
+
+		GamePadState(Vector2 const& leftThumbStick, Vector2 const& rightThumbStick, double leftTrigger, double rightTrigger, std::vector<Buttons> buttons) :
+			GamePadState(GamePadThumbSticks(leftThumbStick, rightThumbStick), GamePadTriggers(leftTrigger, rightTrigger), GamePadButtons(buttons), GamePadDPad(buttons)) {
+
+		}
+
+		void PlatformConstruct() {
 		}
 
 		static constexpr GamePadState Default() {
 			return GamePadState();
 		}
 
+		constexpr bool IsButtonDown(Buttons button) const {
+			if (button == xna::Buttons::None) 
+				return false;
+
+			const auto btns = GetVirtualButtons();
+			const auto result = static_cast<xna::Buttons>(toint(btns) & toint(button));
+
+			return result == button;
+		}
+
+		constexpr bool IsButtonUp(Buttons button) const {
+			const auto btns = GetVirtualButtons();
+			const auto result = static_cast<xna::Buttons>(toint(btns) & toint(button));
+
+			return result != button;
+		}
+
+		constexpr bool Equals(GamePadState const& other) const {
+			return (IsConnected == other.IsConnected) 
+				&& (PacketNumber == other.PacketNumber) 
+				&& (Buttons == other.Buttons) 
+				&& (DPad == other.DPad) 
+				&& (ThumbSticks == other.ThumbSticks) 
+				&& (Triggers == other.Triggers);
+		}
+
+		friend constexpr bool operator==(GamePadState const& left, GamePadState const& right) {
+			return left.Equals(right);
+		}
+
+		friend constexpr bool operator!=(GamePadState const& left, GamePadState const& right) {
+			return !left.Equals(right);
+		}
+
+	public:
 		bool IsConnected{ false };
 		csint PacketNumber{ 0 };
 		GamePadButtons Buttons;
 		GamePadDPad DPad;
 		GamePadThumbSticks ThumbSticks;
 		GamePadTriggers Triggers;
+
+	private:
+		constexpr xna::Buttons GetVirtualButtons() const {
+			auto result = toint(Buttons._buttons) | toint(ThumbSticks._virtualButtons);
+
+			if (DPad.Down == ButtonState::Pressed)
+				result |= toint(Buttons::DPadDown);
+			if (DPad.Up == ButtonState::Pressed)
+				result |= toint(Buttons::DPadUp);
+			if (DPad.Left == ButtonState::Pressed)
+				result |= toint(Buttons::DPadLeft);
+			if (DPad.Right == ButtonState::Pressed)
+				result |= toint(Buttons::DPadRight);
+
+			return static_cast<xna::Buttons>(result);
+		}
 	};
 
 	/*struct GamePad {
