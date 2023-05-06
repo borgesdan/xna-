@@ -1,19 +1,19 @@
 #ifndef XNA_INPUT_MOUSE_HPP
 #define XNA_INPUT_MOUSE_HPP
 
-#include "../csharp/integralnumeric.hpp"
 #include "../basic-structs.hpp"
 #include "enumerations.hpp"
 #include <Windows.h>
 
 namespace xna {
 	class Texture2D;
+	class GameWindow;
 
 	struct MouseState {
 		constexpr MouseState() = default;
 
-		constexpr MouseState(csint x, csint y, csint scrollWheel, ButtonState leftButton, ButtonState middleButton, ButtonState rightButton,
-			ButtonState xButton1, ButtonState xButton2, csint horizontalScrollWheel = 0) :
+		constexpr MouseState(int x, int y, int scrollWheel, ButtonState leftButton, ButtonState middleButton, ButtonState rightButton,
+			ButtonState xButton1, ButtonState xButton2, int horizontalScrollWheel = 0) :
 			X(x), Y(y),	ScrollWheelValue(scrollWheel), HorizontalScrollWheelValue(horizontalScrollWheel) {
 			_buttons = tobyte(
 				(leftButton == ButtonState::Pressed ? LeftButtonFlag : 0) |
@@ -99,8 +99,8 @@ namespace xna {
 		}
 
 	public:
-		csint X{ 0 };
-		csint Y{ 0 };
+		int X{ 0 };
+		int Y{ 0 };
 
 	private:
 		static constexpr csbyte LeftButtonFlag = static_cast<csbyte>(MouseButton::Left);
@@ -109,8 +109,8 @@ namespace xna {
 		static constexpr csbyte XButton1Flag = static_cast<csbyte>(MouseButton::X1);
 		static constexpr csbyte XButton2Flag = static_cast<csbyte>(MouseButton::X2);
 
-		csint ScrollWheelValue{ 0 };
-		csint HorizontalScrollWheelValue{ 0 };
+		int ScrollWheelValue{ 0 };
+		int HorizontalScrollWheelValue{ 0 };
 		csbyte _buttons{ 0 };
 	};
 
@@ -138,7 +138,20 @@ namespace xna {
 	};
 
 	struct Mouse {
+		static MouseState GetState(GameWindow const& window) {
+			return PlaftformGetState(window);
+		}
 
+		static MouseState GetState();
+		static void SetPosition(int x, int y);
+		static void SetCursor(MouseCursor const& cursor);
+
+	private:
+		MouseState _defaultState;
+
+		static MouseState PlaftformGetState(GameWindow const& window);
+		static void PlatformSetPosition(int x, int y);
+		static void PlatformSetCursor(MouseCursor const& cursor);
 	};
 }
 
