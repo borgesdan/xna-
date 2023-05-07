@@ -4,6 +4,10 @@
 
 # Add source to this project's executable.
 add_executable (xna++ 
+"content/decompress-stream.cpp"
+"content/lzxdecoder.cpp"
+"content/contentreader.cpp"
+"content/contentmanager.cpp" 
 "csharp/integralnumeric.cpp"
 "csharp/numeric.cpp"
 "csharp/type.cpp"
@@ -13,14 +17,21 @@ add_executable (xna++
 "csharp/floatnumeric.cpp"
 "csharp/timespan.cpp"
 "csharp/stopwatch.cpp"
+"csharp/stream/stream.cpp"
+"csharp/array.cpp"
+"csharp/io/file.cpp"
+"csharp/enumerations.cpp"
 "input/mouse.cpp"
 "input/enumerations.cpp" 
 "input/keyboard.cpp"
 "input/joystick.cpp"
+"input/gamepad.cpp"
+"input/input.cpp"
 "graphics/packedvector.cpp"
+"graphics/texture.cpp"
 "utilities/stringhelper.cpp"
-"mathhelper.cpp"
 "utilities/filehelpers.cpp"
+"mathhelper.cpp"
 "xna++.cpp"
 "basic-structs.cpp"
 "csharp/nullable.cpp" 
@@ -28,17 +39,10 @@ add_executable (xna++
 "curve.cpp"
 "color.cpp"
 "gameclock.cpp"
-"content/contentreader.cpp"
-"csharp/stream/stream.cpp"
-"csharp/array.cpp"
-"content/contentmanager.cpp" 
 "titlecontainer.cpp" 
-"content/decompress-stream.cpp"
-"content/lzxdecoder.cpp"
 "collision.cpp"
-"csharp/enumerations.cpp"
-"csharp/io/file.cpp"
- "input/gamepad.cpp" "graphics/texture.cpp")
+"gamewindow.cpp"
+)
 
 if (CMAKE_VERSION VERSION_GREATER 3.12)
   set_property(TARGET xna++ PROPERTY CXX_STANDARD 20)

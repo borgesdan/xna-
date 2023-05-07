@@ -78,50 +78,7 @@ namespace xna {
 		friend constexpr bool operator!=(JoystickCapabilities const& left, JoystickCapabilities const& right) {
 			return !left.Equals(right);
 		}
-	};
-
-	struct Joystick {
-		static constexpr bool IsSupported() {
-			return PlatformIsSupported();
-		}
-
-		static constexpr csint LasConnectedIndex() {
-			return PlatformLastConnectedIndex();
-		}
-
-		static constexpr JoystickCapabilities GetCapabilities(csint index) {
-			return PlatformGetCapabilities(index);
-		}
-
-		static constexpr JoystickState GetState(csint index) {
-			return PlatformGetState(index);
-		}
-
-		static constexpr void Getstate(JoystickState& joystickState, csint index) {
-			PlatformLastConnectedIndex(joystickState, index);
-		}
-
-
-	private:
-		static constexpr bool PlatformIsSupported() {
-			return false;
-		}
-
-		static constexpr JoystickCapabilities PlatformGetCapabilities(csint index) {
-			return JoystickCapabilities();
-		}
-
-		static constexpr JoystickState PlatformGetState(csint index) {
-			return JoystickState();
-		}
-
-		static constexpr csint PlatformLastConnectedIndex() {
-			return -1;
-		}
-
-		static constexpr void PlatformLastConnectedIndex(JoystickState& joystickState, csint index) {
-		}
-	};
+	};	
 }
 
 #endif

@@ -7,7 +7,6 @@
 
 namespace xna {
 	class Texture2D;
-	class GameWindow;
 
 	struct MouseState {
 		constexpr MouseState() = default;
@@ -135,24 +134,7 @@ namespace xna {
 
 		static MouseCursor PlatformFromTexture2D(Texture2D texture, int originx, int originy);
 		static MouseCursor FromTexture2D(Texture2D texture, int originx, int originy);
-	};
-
-	struct Mouse {
-		static MouseState GetState(GameWindow const& window) {
-			return PlaftformGetState(window);
-		}
-
-		static MouseState GetState();
-		static void SetPosition(int x, int y);
-		static void SetCursor(MouseCursor const& cursor);
-
-	private:
-		MouseState _defaultState;
-
-		static MouseState PlaftformGetState(GameWindow const& window);
-		static void PlatformSetPosition(int x, int y);
-		static void PlatformSetCursor(MouseCursor const& cursor);
-	};
+	};	
 }
 
 #endif

@@ -428,58 +428,7 @@ namespace xna {
 
 			return static_cast<xna::Buttons>(result);
 		}
-	};
-
-	struct GamePad {
-		static GamePadCapabilities GetCapabilities(PlayerIndex playerIndex) {
-			const auto index = static_cast<int>(playerIndex);
-
-			if (index < 0 || index >= PlatformGetMaxNumberOfGamePads())
-				return GamePadCapabilities();
-
-			return PlatformGetCapabilities(index);
-		}
-
-		static GamePadState GetState(PlayerIndex playerIndex, GamePadDeadZone leftDeadZoneMode = GamePadDeadZone::IndependentAxes,
-			GamePadDeadZone rightDeadZoneMode = GamePadDeadZone::IndependentAxes) {
-			const auto index = static_cast<int>(playerIndex);
-
-			if (index < 0 || index >= PlatformGetMaxNumberOfGamePads())
-				return GamePadState::Default();
-
-			return PlatformGetState(index, leftDeadZoneMode, rightDeadZoneMode);
-		}
-
-		static constexpr bool SetVibration(PlayerIndex playerIndex, double leftMotor, double rightMotor, double leftTrigger = 0.0, double rightTrigger = 0.0) {
-			const auto index = static_cast<int>(playerIndex);
-			
-			if (index < 0 || index >= PlatformGetMaxNumberOfGamePads())
-				return false;
-
-			return PlatformSetVibration(index, Math::Clamp(leftMotor, 0.0f, 1.0f), Math::Clamp(rightMotor, 0.0f, 1.0f), Math::Clamp(leftTrigger, 0.0f, 1.0f), Math::Clamp(rightTrigger, 0.0f, 1.0f));
-		}
-
-		static constexpr int MaximumGamePadCount() {
-			return PlatformGetMaxNumberOfGamePads();
-		}
-
-	private:
-		static constexpr int PlatformGetMaxNumberOfGamePads() {
-			return 4;
-		}
-
-		static GamePadCapabilities PlatformGetCapabilities(int index) {
-			return GamePadCapabilities();
-		}
-
-		static GamePadState PlatformGetState(int index, GamePadDeadZone leftDeadZoneMode, GamePadDeadZone rightDeadZoneMode) {
-			return GamePadState();
-		}
-
-		static bool PlatformSetVibration(int index, double leftMotor, double rightMotor, double leftTrigger, double rightTrigger) {
-			return false;
-		}
-	};
+	};	
 }
 
 #endif
